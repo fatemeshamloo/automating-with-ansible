@@ -12,7 +12,11 @@
 </head>
 
 <body <?php body_class(); ?>>
-    <?php wp_body_open(); ?>
+    <?php 
+    if (function_exists('wp_body_open')) {
+        wp_body_open(); 
+    }
+    ?>
     
     <header id="masthead" class="site-header">
         <div class="site-branding">
@@ -44,11 +48,17 @@
         
         <nav id="site-navigation" class="main-navigation">
             <?php
-            wp_nav_menu(array(
-                'theme_location' => 'main-menu',
-                'menu_id'        => 'primary-menu',
-                'fallback_cb'    => 'wp_page_menu',
-            ));
+            if (has_nav_menu('main-menu')) {
+                wp_nav_menu(array(
+                    'theme_location' => 'main-menu',
+                    'menu_id'        => 'primary-menu',
+                    'fallback_cb'    => false,
+                ));
+            } else {
+                wp_page_menu(array(
+                    'menu_id'        => 'primary-menu',
+                ));
+            }
             ?>
         </nav>
     </header>
@@ -58,7 +68,7 @@
         <!-- Welcome Message -->
         <?php if (is_home() || is_front_page()) : ?>
             <div class="welcome-message">
-                <?php echo get_theme_mod('welcome_message', 'به هنر ایران خوش آمدید - کیفیت و اصالت در هر اثر'); ?>
+                <?php echo esc_html(get_theme_mod('welcome_message', 'به هنر ایران خوش آمدید - کیفیت و اصالت در هر اثر')); ?>
             </div>
         <?php endif; ?>
 
@@ -71,19 +81,33 @@
 
         <?php if (have_posts()) : ?>
             
-            <?php if (is_shop() || is_product_category() || is_product_tag()) : ?>
+            <?php 
+            $is_shop = false;
+            if (function_exists('is_shop') && function_exists('is_product_category') && function_exists('is_product_tag')) {
+                $is_shop = is_shop() || is_product_category() || is_product_tag();
+            }
+            ?>
+            
+            <?php if ($is_shop) : ?>
                 <!-- WooCommerce Product Grid -->
                 <div class="product-grid">
                     <?php while (have_posts()) : the_post(); ?>
-                        <?php wc_get_template_part('content', 'product'); ?>
+                        <?php 
+                        if (function_exists('wc_get_template_part')) {
+                            wc_get_template_part('content', 'product'); 
+                        } else {
+                            // Fallback for when WooCommerce is not active
+                            get_template_part('content', 'product');
+                        }
+                        ?>
                     <?php endwhile; ?>
                 </div>
                 
                 <?php
-                /**
-                 * Hook: woocommerce_after_shop_loop.
-                 */
-                do_action('woocommerce_after_shop_loop');
+                // WooCommerce hooks
+                if (function_exists('do_action')) {
+                    do_action('woocommerce_after_shop_loop');
+                }
                 ?>
                 
             <?php else : ?>
@@ -126,8 +150,10 @@
                 <?php
                 if (function_exists('woocommerce_pagination')) {
                     woocommerce_pagination();
-                } else {
+                } elseif (function_exists('the_posts_pagination')) {
                     the_posts_pagination();
+                } else {
+                    posts_nav_link();
                 }
                 ?>
             </div>
@@ -136,16 +162,16 @@
             
             <section class="no-results not-found">
                 <header class="page-header">
-                    <h1 class="page-title"><?php _e('هیچ چیزی یافت نشد', 'artofiran'); ?></h1>
+                    <h1 class="page-title"><?php esc_html_e('هیچ چیزی یافت نشد', 'artofiran'); ?></h1>
                 </header>
 
                 <div class="page-content">
                     <?php if (is_home() && current_user_can('publish_posts')) : ?>
-                        <p><?php _e('آماده انتشار اولین پست خود هستید؟', 'artofiran'); ?></p>
+                        <p><?php esc_html_e('آماده انتشار اولین پست خود هستید؟', 'artofiran'); ?></p>
                     <?php elseif (is_search()) : ?>
-                        <p><?php _e('متأسفانه هیچ چیزی برای جستجوی شما یافت نشد. لطفا با کلمات کلیدی متفاوت تلاش کنید.', 'artofiran'); ?></p>
+                        <p><?php esc_html_e('متأسفانه هیچ چیزی برای جستجوی شما یافت نشد. لطفا با کلمات کلیدی متفاوت تلاش کنید.', 'artofiran'); ?></p>
                     <?php else : ?>
-                        <p><?php _e('به نظر می‌رسد ما نمی‌توانیم آنچه را که به دنبال آن هستید پیدا کنیم.', 'artofiran'); ?></p>
+                        <p><?php esc_html_e('به نظر می‌رسد ما نمی‌توانیم آنچه را که به دنبال آن هستید پیدا کنیم.', 'artofiran'); ?></p>
                     <?php endif; ?>
                 </div>
             </section>
@@ -176,7 +202,7 @@
         </div>
         
         <div class="site-info">
-            <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. <?php _e('تمامی حقوق محفوظ است.', 'artofiran'); ?></p>
+            <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. <?php esc_html_e('تمامی حقوق محفوظ است.', 'artofiran'); ?></p>
             <?php if (get_theme_mod('footer_text')) : ?>
                 <p><?php echo wp_kses_post(get_theme_mod('footer_text')); ?></p>
             <?php endif; ?>

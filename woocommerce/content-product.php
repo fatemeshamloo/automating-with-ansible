@@ -34,27 +34,27 @@ if (empty($product) || !$product->is_visible()) {
         do_action('woocommerce_before_shop_loop_item_title');
         ?>
         
-        <?php
-        // Product main image
-        if (has_post_thumbnail()) {
-            echo '<a href="' . esc_url(get_permalink()) . '">';
-            the_post_thumbnail('woocommerce_thumbnail', array('alt' => get_the_title()));
-            echo '</a>';
-        } else {
-            echo '<a href="' . esc_url(get_permalink()) . '">';
-            echo wc_placeholder_img('woocommerce_thumbnail');
-            echo '</a>';
-        }
-        ?>
+        <a href="<?php echo esc_url(get_permalink()); ?>">
+            <?php
+            // Product main image
+            if (has_post_thumbnail()) {
+                the_post_thumbnail('woocommerce_thumbnail', array('alt' => get_the_title()));
+            } else {
+                echo wc_placeholder_img('woocommerce_thumbnail');
+            }
+            ?>
+        </a>
         
         <?php
-        // Secondary image (for Iranian art cultural context)
-        $attachment_ids = $product->get_gallery_image_ids();
-        if (!empty($attachment_ids)) {
-            $secondary_image_id = $attachment_ids[0];
-            echo '<a href="' . esc_url(get_permalink()) . '">';
-            echo wp_get_attachment_image($secondary_image_id, 'thumbnail', false, array('class' => 'secondary-image', 'alt' => get_the_title()));
-            echo '</a>';
+        // Secondary image (gallery image)
+        if (function_exists('wc_get_gallery_image_ids')) {
+            $attachment_ids = $product->get_gallery_image_ids();
+            if (!empty($attachment_ids)) {
+                $secondary_image_id = $attachment_ids[0];
+                echo '<a href="' . esc_url(get_permalink()) . '">';
+                echo wp_get_attachment_image($secondary_image_id, 'thumbnail', false, array('class' => 'secondary-image', 'alt' => get_the_title()));
+                echo '</a>';
+            }
         }
         ?>
     </div>
@@ -152,8 +152,8 @@ if (empty($product) || !$product->is_visible()) {
     }
     
     // Add new product badge (if product is less than 30 days old)
-    $created_date = strtotime($product->get_date_created());
-    if ($created_date > strtotime('-30 days')) {
+    $created_date = $product->get_date_created();
+    if ($created_date && $created_date->getTimestamp() > strtotime('-30 days')) {
         echo '<span class="new-badge">جدید</span>';
     }
     ?>
