@@ -1,0 +1,267 @@
+/*
+ * RTL Stylesheet for Art of Iran Theme
+ * Additional styles for Persian/Farsi (Right-to-Left) support
+ */
+
+/* RTL Text Alignment */
+body.rtl {
+    text-align: right;
+    direction: rtl;
+}
+
+/* Navigation adjustments for RTL */
+body.rtl nav ul {
+    direction: rtl;
+}
+
+body.rtl nav ul li {
+    margin: 0 15px 0 0;
+}
+
+/* Menu toggle position for RTL */
+body.rtl .menu-toggle {
+    right: auto;
+    left: 20px;
+}
+
+/* Product grid adjustments */
+body.rtl .product-grid {
+    direction: rtl;
+}
+
+body.rtl .product-card {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Price display for Persian/Farsi */
+body.rtl .price {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: bidi-override;
+}
+
+/* Currency positioning */
+body.rtl .woocommerce-Price-currencySymbol {
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+/* Form elements RTL */
+body.rtl input[type="text"],
+body.rtl input[type="email"],
+body.rtl input[type="password"],
+body.rtl input[type="search"],
+body.rtl textarea,
+body.rtl select {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Search form RTL */
+body.rtl .search-form {
+    direction: rtl;
+}
+
+body.rtl .search-clear {
+    left: 10px;
+    right: auto;
+}
+
+/* Breadcrumbs RTL */
+body.rtl .breadcrumbs {
+    direction: rtl;
+}
+
+body.rtl .breadcrumbs::before {
+    content: "←";
+    margin: 0 0 0 5px;
+}
+
+/* Social links RTL */
+body.rtl .social-links {
+    direction: rtl;
+}
+
+/* Footer RTL */
+body.rtl footer {
+    direction: rtl;
+    text-align: center;
+}
+
+/* WooCommerce specific RTL adjustments */
+body.rtl .woocommerce ul.products li.product {
+    direction: rtl;
+}
+
+body.rtl .woocommerce .quantity input {
+    direction: ltr;
+}
+
+body.rtl .woocommerce table.cart td.actions {
+    text-align: left;
+}
+
+/* Dokan RTL support */
+body.rtl .dokan-store-wrap {
+    direction: rtl;
+}
+
+body.rtl .dokan-store-tabs ul {
+    direction: rtl;
+}
+
+body.rtl .dokan-store-tabs ul li {
+    float: right;
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+/* Product attributes RTL */
+body.rtl .product-attributes {
+    direction: rtl;
+}
+
+body.rtl .product-attributes .attribute {
+    direction: rtl;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Cart and checkout RTL */
+body.rtl .woocommerce-cart table.cart {
+    direction: rtl;
+}
+
+body.rtl .woocommerce-cart table.cart th,
+body.rtl .woocommerce-cart table.cart td {
+    text-align: right;
+}
+
+body.rtl .woocommerce-cart .cart-collaterals {
+    direction: rtl;
+}
+
+/* Checkout form RTL */
+body.rtl .woocommerce-checkout .checkout {
+    direction: rtl;
+}
+
+body.rtl .woocommerce-checkout .form-row {
+    direction: rtl;
+}
+
+/* Product gallery RTL */
+body.rtl .woocommerce div.product div.images {
+    direction: rtl;
+}
+
+body.rtl .woocommerce div.product .flex-control-thumbs li {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Product tabs RTL */
+body.rtl .woocommerce div.product .woocommerce-tabs ul.tabs {
+    direction: rtl;
+}
+
+body.rtl .woocommerce div.product .woocommerce-tabs ul.tabs li {
+    float: right;
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Persian number formatting */
+body.rtl .persian-numbers {
+    font-family: 'Vazir', sans-serif;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+
+/* Date formatting for Persian */
+body.rtl .date,
+body.rtl .posted-on {
+    direction: rtl;
+}
+
+/* Comment form RTL */
+body.rtl .comment-form {
+    direction: rtl;
+}
+
+body.rtl .comment-form-author,
+body.rtl .comment-form-email,
+body.rtl .comment-form-url {
+    direction: rtl;
+}
+
+/* Widget areas RTL */
+body.rtl .widget {
+    direction: rtl;
+}
+
+body.rtl .widget ul {
+    direction: rtl;
+}
+
+body.rtl .widget ul li {
+    text-align: right;
+}
+
+/* Pagination RTL */
+body.rtl .pagination {
+    direction: rtl;
+}
+
+body.rtl .page-numbers {
+    direction: rtl;
+}
+
+/* Mobile menu RTL adjustments */
+@media (max-width: 768px) {
+    body.rtl nav ul {
+        direction: rtl;
+        text-align: center;
+    }
+    
+    body.rtl .menu-toggle {
+        left: 20px;
+        right: auto;
+    }
+}
+
+/* Persian typography improvements */
+body.rtl h1, 
+body.rtl h2, 
+body.rtl h3, 
+body.rtl h4, 
+body.rtl h5, 
+body.rtl h6 {
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+body.rtl p {
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Currency and price RTL fixes */
+body.rtl .amount {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+
+body.rtl .woocommerce-Price-amount {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+}
+
+/* Custom badge positioning for RTL */
+body.rtl .sale-badge,
+body.rtl .new-badge {
+    left: 10px;
+    right: auto;
+}

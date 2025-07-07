@@ -1,0 +1,317 @@
+/*
+ Theme Name: Art of Iran
+ Theme URI: https://artofiran.com
+ Author: Shamloo
+ Description: A custom minimal WordPress theme for Art of Iran eCommerce with multi-vendor support.
+ Version: 1.0
+ Text Domain: artofiran
+ */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazir', sans-serif;
+    background-color: #f9f7f4;
+    color: #4a4a4a;
+    line-height: 1.6;
+    direction: rtl;
+}
+
+/* Color Palette (Inspired by Iran Flag, Pastel) */
+:root {
+    --pastel-green: #a8d5ba; /* Inspired by Iran's green */
+    --pastel-white: #f9f7f4; /* Inspired by Iran's white */
+    --pastel-red: #f4c7c3;   /* Inspired by Iran's red */
+    --pastel-blue: #c3d7e6;  /* Complementary color */
+    --accent-dark: #4a4a4a;  /* For text and contrast */
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Vazir', sans-serif;
+    color: var(--accent-dark);
+}
+
+/* Header */
+header {
+    background-color: var(--pastel-white);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.site-branding {
+    text-align: center;
+}
+
+.site-branding img {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Currency Switcher */
+.currency-switcher {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.currency-switcher select {
+    padding: 5px;
+    background-color: var(--pastel-blue);
+    border: none;
+    border-radius: 5px;
+    color: var(--accent-dark);
+}
+
+/* Navigation */
+nav {
+    background-color: var(--pastel-green);
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--pastel-red);
+}
+
+/* Mobile Menu */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--accent-dark);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        text-align: center;
+        background-color: var(--pastel-green);
+        padding: 20px 0;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
+}
+
+/* Main Content */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--pastel-white);
+}
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card h3 {
+    font-size: 1.2rem;
+    margin: 10px;
+    color: var(--accent-dark);
+}
+
+.product-card .price {
+    color: var(--pastel-red);
+    font-weight: bold;
+    margin: 0 10px 10px;
+}
+
+.product-card .artist {
+    font-size: 0.9rem;
+    color: var(--pastel-blue);
+    margin: 5px 10px;
+}
+
+.product-card .cultural {
+    font-size: 0.8rem;
+    color: var(--accent-dark);
+    margin: 5px 10px;
+}
+
+.product-card .secondary-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+.product-card .categories {
+    font-size: 0.8rem;
+    color: var(--pastel-green);
+    margin: 5px 10px;
+}
+
+/* WooCommerce Buttons */
+.button, .woocommerce-button {
+    background-color: var(--pastel-red);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+
+.button:hover, .woocommerce-button:hover {
+    background-color: var(--pastel-blue);
+    transform: scale(1.05);
+}
+
+/* Dokan Vendor Store */
+.dokan-store-wrap {
+    background-color: var(--pastel-white);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.dokan-store-header {
+    background-color: var(--pastel-green);
+    padding: 15px;
+    text-align: center;
+}
+
+.dokan-store-banner img {
+    max-height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.dokan-store-tabs ul li a {
+    color: var(--accent-dark);
+}
+
+.dokan-store-tabs ul li a:hover {
+    color: var(--pastel-red);
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: var(--accent-dark);
+}
+
+.breadcrumbs a {
+    color: var(--pastel-blue);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--pastel-red);
+}
+
+/* Welcome Message */
+.welcome-message {
+    background-color: var(--pastel-red);
+    padding: 10px;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--accent-dark);
+}
+
+/* Social Links */
+.social-links {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.social-link {
+    margin: 0 10px;
+    color: var(--pastel-red);
+    text-decoration: none;
+}
+
+.social-link:hover {
+    color: var(--pastel-blue);
+}
+
+/* Footer */
+footer {
+    background-color: var(--pastel-green);
+    padding: 20px;
+    text-align: center;
+    color: var(--accent-dark);
+}
+
+.footer-widgets {
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-branding img {
+        max-width: 120px;
+    }
+
+    .product-card img {
+        height: 150px;
+    }
+}
