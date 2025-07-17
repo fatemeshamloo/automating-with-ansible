@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گالری تصاویر انیمیشن دار</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .gallery-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: titleFadeIn 1s ease-out;
+        }
+
+        @keyframes titleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: itemFadeInUp 0.6s ease-out both;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes itemFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102,126,234,0.8), rgba(118,75,162,0.8));
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .overlay-content {
+            text-align: center;
+            color: white;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .overlay-content {
+            transform: translateY(0);
+        }
+
+        .overlay-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .overlay-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .zoom-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .gallery-item:hover .zoom-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            animation: lightboxFadeIn 0.3s ease;
+        }
+
+        @keyframes lightboxFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .lightbox-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            animation: lightboxZoomIn 0.3s ease;
+        }
+
+        @keyframes lightboxZoomIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .filter-tabs {
+                gap: 5px;
+                margin-bottom: 20px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .gallery-item img {
+                height: 200px;
+            }
+
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .lightbox-close {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Gallery Item Categories */
+        .gallery-item[data-category="nature"] {
+            border-top: 4px solid #4CAF50;
+        }
+
+        .gallery-item[data-category="architecture"] {
+            border-top: 4px solid #2196F3;
+        }
+
+        .gallery-item[data-category="portrait"] {
+            border-top: 4px solid #FF9800;
+        }
+
+        .gallery-item[data-category="landscape"] {
+            border-top: 4px solid #9C27B0;
+        }
+
+        /* Hidden class for filtering */
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        /* Scroll animation */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <h1 class="gallery-title">گالری تصاویر</h1>
+        
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">همه</button>
+            <button class="filter-btn" data-filter="nature">طبیعت</button>
+            <button class="filter-btn" data-filter="architecture">معماری</button>
+            <button class="filter-btn" data-filter="portrait">پرتره</button>
+            <button class="filter-btn" data-filter="landscape">منظره</button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="closeLightbox">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="prevImage">&#8249;</button>
+        <button class="lightbox-nav lightbox-next" id="nextImage">&#8250;</button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImage">
+        </div>
+    </div>
+
+    <script>
+        // Sample gallery data
+        const galleryData = [
+            {
+                id: 1,
+                src: 'https://picsum.photos/400/300?random=1',
+                title: 'طبیعت زیبا',
+                description: 'منظره طبیعی فوق‌العاده',
+                category: 'nature'
+            },
+            {
+                id: 2,
+                src: 'https://picsum.photos/400/300?random=2',
+                title: 'معماری مدرن',
+                description: 'ساختمان مدرن و زیبا',
+                category: 'architecture'
+            },
+            {
+                id: 3,
+                src: 'https://picsum.photos/400/300?random=3',
+                title: 'پرتره هنری',
+                description: 'عکس پرتره زیبا',
+                category: 'portrait'
+            },
+            {
+                id: 4,
+                src: 'https://picsum.photos/400/300?random=4',
+                title: 'منظره کوهستان',
+                description: 'قله‌های برفی زیبا',
+                category: 'landscape'
+            },
+            {
+                id: 5,
+                src: 'https://picsum.photos/400/300?random=5',
+                title: 'جنگل سبز',
+                description: 'جنگل انبوه و سرسبز',
+                category: 'nature'
+            },
+            {
+                id: 6,
+                src: 'https://picsum.photos/400/300?random=6',
+                title: 'پل قدیمی',
+                description: 'معماری کلاسیک',
+                category: 'architecture'
+            },
+            {
+                id: 7,
+                src: 'https://picsum.photos/400/300?random=7',
+                title: 'غروب زیبا',
+                description: 'غروب خورشید در دریا',
+                category: 'landscape'
+            },
+            {
+                id: 8,
+                src: 'https://picsum.photos/400/300?random=8',
+                title: 'گل‌های رنگارنگ',
+                description: 'باغ گل‌های بهاری',
+                category: 'nature'
+            },
+            {
+                id: 9,
+                src: 'https://picsum.photos/400/300?random=9',
+                title: 'برج مدرن',
+                description: 'آسمان‌خراش شهری',
+                category: 'architecture'
+            }
+        ];
+
+        let currentImageIndex = 0;
+        let filteredImages = [...galleryData];
+
+        // Initialize gallery
+        function initGallery() {
+            renderGallery(galleryData);
+            setupEventListeners();
+            setupScrollAnimation();
+        }
+
+        // Render gallery items
+        function renderGallery(images) {
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '';
+
+            images.forEach((image, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item scroll-animate';
+                galleryItem.setAttribute('data-category', image.category);
+                galleryItem.innerHTML = `
+                    <img src="${image.src}" alt="${image.title}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <div class="overlay-title">${image.title}</div>
+                            <div class="overlay-description">${image.description}</div>
+                        </div>
+                    </div>
+                    <div class="zoom-icon">🔍</div>
+                `;
+
+                galleryItem.addEventListener('click', () => openLightbox(index));
+                galleryGrid.appendChild(galleryItem);
+            });
+
+            // Trigger scroll animation
+            setTimeout(() => {
+                const items = document.querySelectorAll('.scroll-animate');
+                items.forEach(item => item.classList.add('visible'));
+            }, 100);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Filter images
+                    const filter = btn.getAttribute('data-filter');
+                    filterImages(filter);
+                });
+            });
+
+            // Lightbox events
+            document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
+            document.getElementById('prevImage').addEventListener('click', () => navigateImage(-1));
+            document.getElementById('nextImage').addEventListener('click', () => navigateImage(1));
+            
+            // Close lightbox on background click
+            document.getElementById('lightbox').addEventListener('click', (e) => {
+                if (e.target.id === 'lightbox') {
+                    closeLightbox();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('lightbox').style.display === 'block') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') navigateImage(-1);
+                    if (e.key === 'ArrowRight') navigateImage(1);
+                }
+            });
+        }
+
+        // Filter images
+        function filterImages(category) {
+            if (category === 'all') {
+                filteredImages = [...galleryData];
+            } else {
+                filteredImages = galleryData.filter(img => img.category === category);
+            }
+            
+            // Add fade out animation
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.style.opacity = '0';
+            galleryGrid.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                renderGallery(filteredImages);
+                galleryGrid.style.opacity = '1';
+                galleryGrid.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Open lightbox
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const image = filteredImages[currentImageIndex];
+            document.getElementById('lightboxImage').src = image.src;
+            document.getElementById('lightboxImage').alt = image.title;
+            document.getElementById('lightbox').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close lightbox
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Navigate images in lightbox
+        function navigateImage(direction) {
+            currentImageIndex += direction;
+            
+            if (currentImageIndex >= filteredImages.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = filteredImages.length - 1;
+            }
+            
+            const image = filteredImages[currentImageIndex];
+            const lightboxImage = document.getElementById('lightboxImage');
+            
+            // Add transition effect
+            lightboxImage.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImage.src = image.src;
+                lightboxImage.alt = image.title;
+                lightboxImage.style.opacity = '1';
+            }, 150);
+        }
+
+        // Setup scroll animation
+        function setupScrollAnimation() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe gallery items
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => observer.observe(item));
+        }
+
+        // Lazy loading for images
+        function setupLazyLoading() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src || img.src;
+                            img.classList.remove('loading');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                images.forEach(img => imageObserver.observe(img));
+            }
+        }
+
+        // Touch/swipe support for mobile
+        function setupTouchSupport() {
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.getElementById('lightbox').addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            document.getElementById('lightbox').addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        navigateImage(1); // Swipe left - next image
+                    } else {
+                        navigateImage(-1); // Swipe right - previous image
+                    }
+                }
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initGallery();
+            setupLazyLoading();
+            setupTouchSupport();
+        });
+
+        // Auto-refresh gallery (optional)
+        function autoRefreshGallery() {
+            setInterval(() => {
+                // You can update gallery data here if needed
+                // For example, fetch new images from an API
+            }, 30000); // Refresh every 30 seconds
+        }
+
+        // Performance optimization: Debounce scroll events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Window resize handler
+        window.addEventListener('resize', debounce(() => {
+            // Recalculate layout if needed
+        }, 300));
+    </script>
+</body>
+</html>
