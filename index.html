@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Car Racing Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>🏎️ Car Racing Game</h1>
+            <div class="game-stats">
+                <div class="stat">
+                    <span>Score: </span>
+                    <span id="score">0</span>
+                </div>
+                <div class="stat">
+                    <span>Speed: </span>
+                    <span id="speed">0</span>
+                    <span> km/h</span>
+                </div>
+                <div class="stat">
+                    <span>Lives: </span>
+                    <span id="lives">3</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <div class="game-overlay" id="gameOverlay">
+                <div class="overlay-content">
+                    <h2 id="overlayTitle">Get Ready!</h2>
+                    <p id="overlayMessage">Use arrow keys to control your car</p>
+                    <button id="startButton" class="game-button">Start Game</button>
+                    <button id="restartButton" class="game-button" style="display: none;">Restart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-info">
+                <h3>Controls:</h3>
+                <div class="control-item">
+                    <span>←→</span> Steer left/right
+                </div>
+                <div class="control-item">
+                    <span>↑↓</span> Accelerate/Brake
+                </div>
+                <div class="control-item">
+                    <span>SPACE</span> Pause
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
